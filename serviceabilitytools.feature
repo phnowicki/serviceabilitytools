@@ -2701,7 +2701,31 @@ And the file is a valid audio file
 Then we should receive a "UPLOADED" response
 And the file should exist on the Music on Hold server
 
+############################ Error handling
 
+Scenario: Check status on invalid service blackSunshine
+When we submit a request for status of blackSunshine
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Restart invalid service blackSunshine
+When we submit a request to restart blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Stop invalid service blackSunshine
+When we submit a request to stop blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Start invalid service blackSunshine
+When we submit a request to start blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Activate invalid service blackSunshine
+When we submit a request to activate blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Deactivate invalid service blackSunshine
+When we submit a request to deactivate blackSunshine service
+Then we should receive a "INVALID SERVICE" response
 
 
 
@@ -5018,3 +5042,29 @@ When we submit a request to deactivate "Cisco XCP Authentication Service" servic
 And the "Cisco XCP Authentication Service" service is "activated"
 Then we should receive "DEACTIVATED" message
 And the status of "Cisco XCP Authentication Service" service should be "DEACTIVATED"
+
+############################ Error handling
+
+Scenario: Check status on invalid service blackSunshine
+When we submit a request for status of blackSunshine
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Restart invalid service blackSunshine
+When we submit a request to restart blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Stop invalid service blackSunshine
+When we submit a request to stop blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Start invalid service blackSunshine
+When we submit a request to start blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Activate invalid service blackSunshine
+When we submit a request to activate blackSunshine service
+Then we should receive a "INVALID SERVICE" response
+
+Scenario: Deactivate invalid service blackSunshine
+When we submit a request to deactivate blackSunshine service
+Then we should receive a "INVALID SERVICE" response
