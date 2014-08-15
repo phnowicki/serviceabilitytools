@@ -5,7 +5,7 @@
 # AUTHOR: Patrick Nowicki (patrick.nowicki.com),
 # COMPANY: CDW
 # VERSION: 1.0
-# CREATED: Fri Aug 15 12:24:01 2014
+# CREATED: Fri Aug 15 12:48:50 2014
 # REVISION: 3
 #===============================================================================
 
@@ -17,6 +17,7 @@ And to regression test the many possible versions of server software
 
 Background:
 Given A server running Cisco CUCM version "any" is accessible
+And role of the server is "Publisher" 
 And the following user credentials
 	| username  | password |
 	| adminuser | foobar   |

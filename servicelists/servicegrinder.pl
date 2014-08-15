@@ -22,6 +22,8 @@ And to regression test the many possible versions of server software
 Background:
 Given A server running Cisco ";
 $introtext2=" version \"any\" is accessible
+And role of the server is \"";
+$introtext3="\" 
 And the following user credentials
 	| username  | password |
 	| adminuser | foobar   |\n";
@@ -32,7 +34,7 @@ while (<ACT>) {
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].activation.feature";
 	open(OUT,">$outfilename");
-	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
+	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
 	Scenario: Activate \"$data[0]\" service
 	When we submit a request to activate \"$data[0]\" service
@@ -64,7 +66,7 @@ while (<LIST>) {
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].running.feature";
 	open(OUT,">$outfilename");
-	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
+	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
 	Scenario: Start \"$data[0]\" service
 	When we submit a request to start \"$data[0]\" service
@@ -112,7 +114,7 @@ while (<LIST>) {
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].status.feature";
 	open(OUT,">$outfilename");
-	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
+	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
 	Scenario: Check the status of a stopped \"$data[0]\" service
 	When we submit a request for the status of the \"$data[0]\" service
