@@ -1,0 +1,131 @@
+Cisco CallManager	CUCM
+Cisco Unified Mobile Voice Access Service	CUCM
+Cisco IP Voice Media Streaming App	CUCM
+Cisco CTI Manager	CUCM
+Cisco Extension Mobility	CUCM
+Cisco Extended Functions	CUCM
+Cisco DHCP Monitor Service	CUCM
+Cisco Dialed Number Analyzer Server	CUCM
+Cisco Dial Number Analyzer	CUCM
+Cisco Tftp	CUCM
+Cisco IP Manager Assisistant	CUCM
+Cisco WebDialer Web Service	CUCM
+Cisco SOAP - CDRonDemand Service	CUCM
+Cisco CAR Web Service	CUCM
+Cisco AXL Web Service	CUCM
+Cisco UXL Web Service	CUCM
+Cisco Bulk Provisioning Service	CUCM
+Cisco TAPS Service	CUCM
+Cisco Serviceability Reporter	CUCM
+Cisco CallManager SNMP Service	CUCM
+Cisco CTL Provider	CUCM
+Cisco Certificate Authority Proxy Function	CUCM
+Cisco DirSync	CUCM
+Cisco Intercluster Lookup Service	CUCM
+Cisco Location Bandwidth Manager	CUCM
+Cisco Directory Number Alias Sync	CUCM
+Cisco Directory Number Alias Lookup	CUCM
+Self Provisioning IVR	CUCM
+Cisco CallManager Serviceability RTMT	CUCM
+Cisco RTMT Reporter Servlet	CUCM
+Cisco Log Partition Monitoring Tool	CUCM
+Cisco Tomcat Stats Servlet	CUCM
+Cisco RIS Data Collector	CUCM
+Cisco AMC Service	CUCM
+Cisco Audit Event Service	CUCM
+Platform Administrative Web Service	CUCM
+A Cisco DB	CUCM
+A Cisco DB Replicator	CUCM
+SNMP Master Agent	CUCM
+MIB2 Agent	CUCM
+Host Resources Agent	CUCM
+System Application Agent	CUCM
+Cisco CDP Agent	CUCM
+Cisco Syslog Agent	CUCM
+Cisco Certificate Expiry Monitor	CUCM
+Cisco Certificate Change Notification	CUCM
+Cisco ELM Client Service	CUCM
+Cisco Tomcat	CUCM
+Cisco License Manager	CUCM
+Cisco CallManager Serviceability	CUCM
+Cisco CDP	CUCM
+Cisco Trace Collection Servlet	CUCM
+Cisco Trace Collection Service	CUCM
+Cisco Database Layer Monitor	CUCM
+Cisco CallManager Admin	CUCM
+SOAP -Real-Time Service APIs	CUCM
+SOAP -Performance Monitoring APIs	CUCM
+SOAP -Log Collection APIs	CUCM
+SOAP - Diagnostic Portal Database Service	CUCM
+Cisco DRF Local	CUCM
+Cisco DRF Master	CUCM
+Cisco CallManager Personal Directory	CUCM
+Cisco Extension Mobility Application	CUCM
+Cisco CallManager Cisco IP Phone Services	CUCM
+Cisco User Data Services	CUCM
+Cisco Change Credential Application	CUCM
+Cisco E911	CUCM
+Cisco CDR Repository Manager	CUCM
+Cisco CDR Agent	CUCM
+Cisco CAR Scheduler	CUCM
+Cisco SOAP - CallRecord Service	CUCM
+Cisco CAR DB	CUCM
+Cisco Trust Verification Service	CUCM
+Cisco AXL Web Service	IMP
+Cisco Bulk Provisioning Service	IMP
+Cisco Serviceability Reporter	IMP
+Cisco SIP Proxy	IMP
+Cisco Presence Engine	IMP
+Cisco XCP Text Conference Manager	IMP
+Cisco XCP Web Connection Manager	IMP
+Cisco XCP Connection Manager	IMP
+Cisco XCP SIP Federation Connection Manager	IMP
+Cisco XCP XMPP Federation Connection Manager	IMP
+Cisco XCP Message Archiver	IMP
+Cisco XCP Directory Service	IMP
+Cisco XCP Authentication Service	IMP
+Cisco CallManager Serviceability RTMT	IMP
+Cisco RTMT Reporter Servlet	IMP
+Cisco Log Partition Monitoring Tool	IMP
+Cisco Tomcat Stats Servlet	IMP
+Cisco RIS Data Collector	IMP
+Cisco AMC Service	IMP
+Cisco Audit Event Service	IMP
+Platform Administrative Web Service	IMP
+A Cisco DB	IMP
+A Cisco DB Replicator	IMP
+SNMP Master Agent	IMP
+MIB2 Agent	IMP
+Host Resources Agent	IMP
+System Application Agent	IMP
+Cisco CDP Agent	IMP
+Cisco Syslog Agent	IMP
+Cisco Certificate Expiry Monitor	IMP
+Cisco Certificate Change Notification	IMP
+Cisco ELM Client Service	IMP
+Cisco Tomcat	IMP
+Cisco License Manager	IMP
+Cisco CallManager Serviceability	IMP
+Cisco CDP	IMP
+Cisco Trace Collection Servlet	IMP
+Cisco Trace Collection Service	IMP
+Cisco Database Layer Monitor	IMP
+Cisco IM and Presence Admin	IMP
+SOAP -Real-Time Service APIs	IMP
+SOAP -Performance Monitoring APIs	IMP
+SOAP -Log Collection APIs	IMP
+Cisco DRF Local	IMP
+Cisco Sync Agent	IMP
+Cisco Login Datastore	IMP
+Cisco Route Datastore	IMP
+Cisco Config Agent	IMP
+Cisco OAM Agent	IMP
+Cisco Client Profile Agent	IMP
+Cisco Intercluster Sync Agent	IMP
+Cisco XCP Config Manager	IMP
+Cisco XCP Router	IMP
+Cisco Server Recovery Manager	IMP
+Cisco IM and Presence Data Monitor	IMP
+Cisco Presence Datastore	IMP
+Cisco SIP Registration Datastore	IMP
+Cisco RCC Device Selection Service	IMP

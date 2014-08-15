@@ -1,0 +1,41 @@
+Cisco CallManager	CUCM
+Cisco Unified Mobile Voice Access Service	CUCM
+Cisco IP Voice Media Streaming App	CUCM
+Cisco CTI Manager	CUCM
+Cisco Extension Mobility	CUCM
+Cisco Extended Functions	CUCM
+Cisco DHCP Monitor Service	CUCM
+Cisco Dialed Number Analyzer Server	CUCM
+Cisco Dial Number Analyzer	CUCM
+Cisco Tftp	CUCM
+Cisco IP Manager Assisistant	CUCM
+Cisco WebDialer Web Service	CUCM
+Cisco SOAP - CDRonDemand Service	CUCM
+Cisco CAR Web Service	CUCM
+Cisco AXL Web Service	CUCM
+Cisco UXL Web Service	CUCM
+Cisco Bulk Provisioning Service	CUCM
+Cisco TAPS Service	CUCM
+Cisco Serviceability Reporter	CUCM
+Cisco CallManager SNMP Service	CUCM
+Cisco CTL Provider	CUCM
+Cisco Certificate Authority Proxy Function	CUCM
+Cisco DirSync	CUCM
+Cisco Intercluster Lookup Service	CUCM
+Cisco Location Bandwidth Manager	CUCM
+Cisco Directory Number Alias Sync	CUCM
+Cisco Directory Number Alias Lookup	CUCM
+Self Provisioning IVR	CUCM
+Cisco AXL Web Service	IMP
+Cisco Bulk Provisioning Service	IMP
+Cisco Serviceability Reporter	IMP
+Cisco SIP Proxy	IMP
+Cisco Presence Engine	IMP
+Cisco XCP Text Conference Manager	IMP
+Cisco XCP Web Connection Manager	IMP
+Cisco XCP Connection Manager	IMP
+Cisco XCP SIP Federation Connection Manager	IMP
+Cisco XCP XMPP Federation Connection Manager	IMP
+Cisco XCP Message Archiver	IMP
+Cisco XCP Directory Service	IMP
+Cisco XCP Authentication Service	IMP
