@@ -30,7 +30,7 @@ And the following user credentials
 while (<ACT>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "servicabilitytools.$data[1].$data[0].activation.feature";
+	$outfilename = "serviceabilitytools.$data[1].$data[0].activation.feature";
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
 	print OUT "\n
@@ -62,7 +62,7 @@ while (<ACT>) {
 while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "servicabilitytools.$data[1].$data[0].running.feature";
+	$outfilename = "serviceabilitytools.$data[1].$data[0].running.feature";
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
 	print OUT "\n
@@ -110,7 +110,7 @@ open(LIST,$ARGV[1]);
 while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "servicabilitytools.$data[1].$data[0].status.feature";
+	$outfilename = "serviceabilitytools.$data[1].$data[0].status.feature";
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2;
 	print OUT "\n
