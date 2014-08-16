@@ -1,3 +1,6 @@
+use File::Basename;
+use File::Path qw/make_path/;
+ 
 open(ACT,$ARGV[0]);
 open(LIST,$ARGV[1]);
 $datestring = localtime();
@@ -32,8 +35,10 @@ And the following user credentials
 while (<ACT>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "serviceabilitytools.$data[1].$data[0].activation.feature";
+	$outfilename = "$data[1]\\$data[0]\\activation.feature";
 	$outfilename =~ s/\s//g;
+	my $dir = dirname($outfilename);
+	make_path($dir);
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
@@ -65,8 +70,10 @@ while (<ACT>) {
 while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "serviceabilitytools.$data[1].$data[0].running.feature";
+	$outfilename = "$data[1]\\$data[0]\\running.feature";
 	$outfilename =~ s/\s//g;
+	my $dir = dirname($outfilename);
+	make_path($dir);
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
@@ -114,8 +121,10 @@ open(LIST,$ARGV[1]);
 while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
-	$outfilename = "serviceabilitytools.$data[1].$data[0].status.feature";
+	$outfilename = "$data[1]\\$data[0]\\status.feature";
 	$outfilename =~ s/\s//g;
+	my $dir = dirname($outfilename);
+	make_path($dir);
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
