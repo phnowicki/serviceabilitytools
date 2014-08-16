@@ -33,6 +33,7 @@ while (<ACT>) {
 	chomp;
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].activation.feature";
+	$outfilename =~ s/\s//g;
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
@@ -65,6 +66,7 @@ while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].running.feature";
+	$outfilename =~ s/\s//g;
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
@@ -113,6 +115,7 @@ while (<LIST>) {
 	chomp;
 	@data=split("\t",$_);
 	$outfilename = "serviceabilitytools.$data[1].$data[0].status.feature";
+	$outfilename =~ s/\s//g;
 	open(OUT,">$outfilename");
 	print OUT $introtext . $outfilename . $introtext1 . $data[1] . $introtext2 . $data[2] . $introtext3;
 	print OUT "\n
