@@ -1,0 +1,129 @@
+Cisco IP Voice Media Streaming App	CUCM	any
+Cisco CTI Manager	CUCM	any
+Cisco Extension Mobility	CUCM	any
+Cisco Extended Functions	CUCM	any
+Cisco DHCP Monitor Service	CUCM	any
+Cisco Dialed Number Analyzer Server	CUCM	any
+Cisco Dial Number Analyzer	CUCM	any
+Cisco Tftp	CUCM	any
+Cisco IP Manager Assisistant	CUCM	any
+Cisco WebDialer Web Service	CUCM	any
+Cisco SOAP - CDRonDemand Service	CUCM	any
+Cisco CAR Web Service	CUCM	any
+Cisco AXL Web Service	CUCM	any
+Cisco UXL Web Service	CUCM	any
+Cisco Bulk Provisioning Service	CUCM	Publisher
+Cisco TAPS Service	CUCM	Publisher
+Cisco Serviceability Reporter	CUCM	any
+Cisco CallManager SNMP Service	CUCM	any
+Cisco CTL Provider	CUCM	any
+Cisco Certificate Authority Proxy Function	CUCM	Publisher
+Cisco DirSync	CUCM	Publisher
+Cisco Intercluster Lookup Service	CUCM	any
+Cisco Location Bandwidth Manager	CUCM	any
+Cisco Directory Number Alias Sync	CUCM	any
+Cisco Directory Number Alias Lookup	CUCM	any
+Self Provisioning IVR	CUCM	any
+Cisco CallManager Serviceability RTMT	CUCM	any
+Cisco RTMT Reporter Servlet	CUCM	any
+Cisco Log Partition Monitoring Tool	CUCM	any
+Cisco Tomcat Stats Servlet	CUCM	any
+Cisco RIS Data Collector	CUCM	any
+Cisco AMC Service	CUCM	any
+Cisco Audit Event Service	CUCM	any
+Platform Administrative Web Service	CUCM	any
+A Cisco DB	CUCM	any
+A Cisco DB Replicator	CUCM	any
+SNMP Master Agent	CUCM	any
+MIB2 Agent	CUCM	any
+Host Resources Agent	CUCM	any
+System Application Agent	CUCM	any
+Cisco CDP Agent	CUCM	any
+Cisco Syslog Agent	CUCM	any
+Cisco Certificate Expiry Monitor	CUCM	any
+Cisco Certificate Change Notification	CUCM	any
+Cisco ELM Client Service	CUCM	any
+Cisco Tomcat	CUCM	any
+Cisco License Manager	CUCM	any
+Cisco CallManager Serviceability	CUCM	any
+Cisco CDP	CUCM	any
+Cisco Trace Collection Servlet	CUCM	any
+Cisco Trace Collection Service	CUCM	any
+Cisco Database Layer Monitor	CUCM	any
+Cisco CallManager Admin	CUCM	any
+SOAP -Real-Time Service APIs	CUCM	any
+SOAP -Performance Monitoring APIs	CUCM	any
+SOAP -Log Collection APIs	CUCM	any
+SOAP - Diagnostic Portal Database Service	CUCM	any
+Cisco DRF Local	CUCM	any
+Cisco DRF Master	CUCM	any
+Cisco CallManager Personal Directory	CUCM	any
+Cisco Extension Mobility Application	CUCM	any
+Cisco CallManager Cisco IP Phone Services	CUCM	any
+Cisco User Data Services	CUCM	any
+Cisco Change Credential Application	CUCM	any
+Cisco E911	CUCM	any
+Cisco CDR Repository Manager	CUCM	any
+Cisco CDR Agent	CUCM	any
+Cisco CAR Scheduler	CUCM	any
+Cisco SOAP - CallRecord Service	CUCM	any
+Cisco CAR DB	CUCM	any
+Cisco Trust Verification Service	CUCM	any
+Cisco AXL Web Service	IMP	any
+Cisco Bulk Provisioning Service	IMP	any
+Cisco Serviceability Reporter	IMP	any
+Cisco SIP Proxy	IMP	any
+Cisco Presence Engine	IMP	any
+Cisco XCP Text Conference Manager	IMP	any
+Cisco XCP Web Connection Manager	IMP	any
+Cisco XCP Connection Manager	IMP	any
+Cisco XCP SIP Federation Connection Manager	IMP	any
+Cisco XCP XMPP Federation Connection Manager	IMP	any
+Cisco XCP Message Archiver	IMP	any
+Cisco XCP Directory Service	IMP	any
+Cisco XCP Authentication Service	IMP	any
+Cisco CallManager Serviceability RTMT	IMP	any
+Cisco RTMT Reporter Servlet	IMP	any
+Cisco Log Partition Monitoring Tool	IMP	any
+Cisco Tomcat Stats Servlet	IMP	any
+Cisco RIS Data Collector	IMP	any
+Cisco AMC Service	IMP	any
+Cisco Audit Event Service	IMP	any
+Platform Administrative Web Service	IMP	any
+A Cisco DB	IMP	any
+A Cisco DB Replicator	IMP	any
+SNMP Master Agent	IMP	any
+MIB2 Agent	IMP	any
+Host Resources Agent	IMP	any
+System Application Agent	IMP	any
+Cisco CDP Agent	IMP	any
+Cisco Syslog Agent	IMP	any
+Cisco Certificate Expiry Monitor	IMP	any
+Cisco Certificate Change Notification	IMP	any
+Cisco ELM Client Service	IMP	any
+Cisco Tomcat	IMP	any
+Cisco License Manager	IMP	any
+Cisco CallManager Serviceability	IMP	any
+Cisco CDP	IMP	any
+Cisco Trace Collection Servlet	IMP	any
+Cisco Trace Collection Service	IMP	any
+Cisco Database Layer Monitor	IMP	any
+Cisco IM and Presence Admin	IMP	any
+SOAP -Real-Time Service APIs	IMP	any
+SOAP -Performance Monitoring APIs	IMP	any
+SOAP -Log Collection APIs	IMP	any
+Cisco DRF Local	IMP	any
+Cisco Sync Agent	IMP	any
+Cisco Login Datastore	IMP	any
+Cisco Route Datastore	IMP	any
+Cisco Config Agent	IMP	any
+Cisco OAM Agent	IMP	any
+Cisco Client Profile Agent	IMP	any
+Cisco Intercluster Sync Agent	IMP	any
+Cisco XCP Config Manager	IMP	any
+Cisco XCP Router	IMP	any
+Cisco Server Recovery Manager	IMP	any
+Cisco IM and Presence Data Monitor	IMP	any
+Cisco Presence Datastore	IMP	any
+Cisco SIP Registration Datastore	IMP	any
+Cisco RCC Device Selection Service	IMP	any
