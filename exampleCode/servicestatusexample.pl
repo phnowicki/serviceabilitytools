@@ -11,19 +11,13 @@ sub SOAP::Transport::HTTP::Client::get_basic_credentials {
     return ($user => $password)
 }
 }
-print "Service Activation Started...\n";
-print "Time\t\t\tService name\t\tActivation Status\t\tService Status\t\tUptime\n";
+print "Service startup...\n";
+print "Time\t\t\tService name\t\tCurrent Status\t\tUptime\n";
 open(IN,$ARGV[0]) or die "can't open input file";
 while(<IN>) {
 	($servicename,$hostname) = split("\t");
-	$response = $interface->soapDoServiceDeployment( {
-		DeploymentServiceRequest =>  { # MyTypes::DeploymentServiceRequest
-		  NodeName =>  "CUCM10", # string
-		  DeployType => "Deploy", # DeployType
-		  ServiceList =>  { # MyTypes::ArrayOfServices
-			item =>  $servicename, # string
-		  },
-		},
+	 $response = $interface->soapGetServiceStatus( {
+		ServiceStatus =>  $servicename, # string
 	  },,
 	 );
 
@@ -36,8 +30,9 @@ while(<IN>) {
 			die $response->get_faultstring()->serialize();
 		}
 	}
-	$returninfo=$response->get_soapDoServiceDeploymentReturn();
+	$returninfo=$response->get_soapGetServiceStatusReturn();
 	$success=$returninfo->get_ReturnCode();
+	$successreason=$returninfo->get_ReasonString();
 	$servhead=$returninfo->get_ServiceInfoList();
 	$servbody=$servhead->get_item();
 	$servname=$servbody->get_ServiceName();
@@ -45,12 +40,7 @@ while(<IN>) {
 	$servstatus=$servbody->get_ServiceStatus();
 	print localtime() . "\t";
 	print "$servname\t";
-	if ($success=='0'){
-		print "Activation Successful\t";
-	} else {
-		print "Activation Failed\t";
-	}
 	print "$servstatus\t\t";
-	printf "%dd, %dh, %dm and %ds\n",(gmtime $servuptime)[7,2,1,0];
+	printf "%dd %dh %dm %ds\n",(gmtime $servuptime)[7,2,1,0];
 }
 
