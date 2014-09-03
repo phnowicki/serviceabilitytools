@@ -1,0 +1,24 @@
+Cisco CallManager	CUCM10
+Cisco Unified Mobile Voice Access Service	CUCM10
+Cisco IP Voice Media Streaming App	CUCM10
+Cisco CTIManager	CUCM10
+Cisco Extension Mobility	CUCM10
+Cisco Extended Functions	CUCM10
+Cisco DHCP Monitor Service	CUCM10
+Cisco Dialed Number Analyzer Server	CUCM10
+Cisco Dialed Number Analyzer	CUCM10
+Cisco Tftp	CUCM10
+Cisco WebDialer Web Service	CUCM10
+Cisco SOAP - CDRonDemand Service	CUCM10
+Cisco CAR Web Service	CUCM10
+Cisco UXL Web Service	CUCM10
+Cisco Bulk Provisioning Service	CUCM10
+Cisco Serviceability Reporter	CUCM10
+Cisco CallManager SNMP Service	CUCM10
+Cisco CTL Provider	CUCM10
+Cisco Certificate Authority Proxy Function	CUCM10
+Cisco DirSync	CUCM10
+Cisco Intercluster Lookup Service	CUCM10
+Cisco Location Bandwidth Manager	CUCM10
+Cisco Directory Number Alias Sync	CUCM10
+Cisco Directory Number Alias Lookup	CUCM10
