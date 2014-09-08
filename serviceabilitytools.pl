@@ -6,12 +6,15 @@
 # Date: 9/1/2014
 # 
 ######################################################################################################
+use Data::Dumper;
+use XML::Simple;
 
 # Support info
 my $supporturl="See https://discdungeon.cdw.com/vvtwiki/index.php/Serviceabilitytools for more info.\n";
 my $validtools="activateservice\ndeactivateservice\nstartservice\nstopservice\nrestartservice\nstatusservice\nlistservice\nlistproductinfo\nclusterrestart\n";
-my $supportedversions = "(10.0,10.5)";
-my $interface;
+my $supportedversions = "(9.1,10.0,10.5)";
+my $servinterface;
+my $risinterface;
 
 # Open and read config file
 open (CONFIG,"serviceabilitytools.cfg") or die "No config file found.\n\n$supporturl";
@@ -51,13 +54,22 @@ sub SOAP::Transport::HTTP::Client::get_basic_credentials {
 }
 
 if ($version eq '10.0') {
-	use ServiceabilityTools::10::0::Interfaces::ControlCenterServices::ControlCenterServicesPort;
-	$interface = ServiceabilityTools::10::0::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
+	use CiscoUC::Serviceability::10_0::Interfaces::ControlCenterServices::ControlCenterServicesPort;
+	$servinterface = CiscoUC::Serviceability::10_0::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
+	use CiscoUC::RIS::10_0::Interfaces::RISService::RisPort;
+	$risinterface = CiscoUC::RIS::10_0::Interfaces::RISService::RisPort->new();
 } elsif ($version eq '10.5') {
-	use ServiceabilityTools::10::5::Interfaces::ControlCenterServices::ControlCenterServicesPort;
-	$interface = ServiceabilityTools::10::5::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
+	use CiscoUC::Serviceability::10_5::Interfaces::ControlCenterServices::ControlCenterServicesPort;
+	$servinterface = CiscoUC::Serviceability::10_5::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
+	use CiscoUC::RIS::10_5::Interfaces::RISService::RisPort;
+	$risinterface = CiscoUC::RIS::10_5::Interfaces::RISService::RisPort->new();
+} elsif ($version eq '9.1') {
+	use CiscoUC::Serviceability::9_1::Interfaces::ControlCenterServices::ControlCenterServicesPort;
+	$servinterface = CiscoUC::Serviceability::9_1::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
+	use CiscoUC::RIS::9_1::Interfaces::RISService::RisPort;
+	$risinterface = CiscoUC::RIS::9_1::Interfaces::RISService::RisPort->new();
 } else {
-	die "Tool not set up to run against version $version. Please use a supported version. $supportedversions\n\n$supporturl";
+	die "Tool does not yet support version $version. Please use a supported version. $supportedversions\n\n$supporturl";
 }
 
 
@@ -77,15 +89,56 @@ if ($ARGV[0] eq 'activateservice') {
 } elsif ($ARGV[0] eq 'statusservice') {
 	### status serv functions
 } elsif ($ARGV[0] eq 'listservice') {
-	### list serv function
-	&servicelist($interface,$ARGV[1]);
-	print "Service list complete...\nOutput can be found in servicelistoutput-$ARGV[1].txt";
+	if($ARGV[1] eq '') {
+		die "Command line must include FQDN or IP address of host to connect to\n";
+	} else {
+		print "Begin service list information gathering...\n";
+		sleep 1;
+		&servicelist($servinterface,$ARGV[1]);
+		print "Service list complete...\nOutput can be found in servicelistoutput-$ARGV[1].txt";
+	}
 } elsif ($ARGV[0] eq 'listproductinfo') {
-	### product info function
-	&productinfo($interface,$ARGV[1]);
-	print "Product information complete...\nOutput can be found in productlistoutput-$ARGV[1].txt";
-} elsif ($ARGV[0] eq 'clusterrestart') {
+	if($ARGV[1] eq '') {
+		die "Command line must include FQDN or IP address of host to connect to\n";
+	} else {
+		print "Begin product information gathering...\n";
+		sleep 1;
+		&productinfo($servinterface,$ARGV[1]);
+		print "Product information complete...\nOutput can be found in productlistoutput-$ARGV[1].txt";
+	}
+} elsif ($ARGV[0] eq 'cmclusterrestart') {
 	### cluster restart functions
+	my @nodes=&getcmnodes($risinterface,$primaryserver);
+	my @runningnodes;
+	print "CM Nodes found: ";
+	foreach $node (@nodes) {print $node . "\t";}
+	print "\n";
+	foreach $node (@nodes) {
+		%response=&statusservice($servinterface,$node,$ARGV[1]);
+		if($response{success} eq 'Successful') {
+			print "Node: $node Service Status: $response{status}\n";
+			if ($response{status} eq 'Started') {
+				push (@runningnodes,$node);
+			}
+		}
+	}
+	foreach $node (@runningnodes) {
+		print "Attempting restart of $ARGV[1] on $node..\n";
+		%response=&startstopservice($servinterface,$node,$node,"Restart",$ARGV[1]);
+		if($response{success} eq 'Successful') {
+			if ($response{uptime} < 60 && $response{status} eq "Started") {
+				print "Restart on $node successful\n";
+			}
+		}
+	}
+} elsif ($ARGV[0] eq 'impclusterrestart') {
+	### cluster restart functions
+	my @nodes=&getimpnodes($risinterface,$primaryserver);
+	print "IM&P Nodes found: ";
+	foreach $node (@nodes) {print $node . ", ";}
+	foreach $node (@nodes) {
+		%response=&statusservice($servinterface,$node,$ARGV[1]);
+	}
 } else {
 	die "No valid tool specified. Valid tools are:\n$validtools\n\n$supporturl";
 }
@@ -164,7 +217,7 @@ sub startstopservice {
 		}
 		$test=1;
 	}
-	$responseinfo=$response->get_soapDoServiceDeploymentReturn();
+	$responseinfo=$response->get_soapDoControlServicesReturn();
 	$success=$responseinfo->get_ReturnCode();
 	$servhead=$responseinfo->get_ServiceInfoList();
 	$servbody=$servhead->get_item();
@@ -345,4 +398,65 @@ sub uptime {
 	my ($uptime) = @_;
 	$converteduptime = "%dd %dh %dm %ds",(gmtime $uptime)[7,2,1,0];
 	return $converteduptime;
+}
+
+sub getcmnodes {
+	my ($interface,$server) = @_;
+	my $sql;
+	my @returninfo;
+	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	if($version eq '9.1') {
+		$sql = "select name from processnode where nodeid>'1'";
+	} else {
+		$sql = "select name from processnode where tkprocessnoderole='1'and nodeid>'1'";
+	}
+	$response = $interface->executeCCMSQLStatement( {
+		ExecuteSQLInputData =>  $sql, # string
+		GetColumns =>  { 
+			ColumnName =>  'name', # string
+		},
+		},,
+	);
+	$response =~ s/ .*"//g;
+	$xml = new XML::Simple;
+	$data = $xml->XMLin($response);
+	if (ref $data->{ExecuteSQLOutputData} eq 'ARRAY') {
+		foreach $serverip (@{$data->{ExecuteSQLOutputData}}) {
+			push (@returninfo,$serverip->{Value});
+		}
+	} else {
+		push (@returninfo,$data->{ExecuteSQLOutputData}->{Value});
+	}
+	return @returninfo;
+}
+
+sub getimpnodes {
+	my ($interface,$server) = @_;
+	my $sql;
+	my @returninfo;
+	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	if($version eq '9.1') {
+		die 'This method not supported with version 9.1';
+	} else {
+		$sql = "select name from processnode where tkprocessnoderole='2'and nodeid>'1'";
+	}
+	$response = $interface->executeCCMSQLStatement( {
+		ExecuteSQLInputData =>  $sql, # string
+		GetColumns =>  { 
+		ColumnName =>  'name', # string
+		},
+		},,
+	);
+	$response =~ s/ .*"//g;
+
+	$xml = new XML::Simple;
+	$data = $xml->XMLin($response);
+	if (ref $data->{ExecuteSQLOutputData} eq 'ARRAY') {
+		foreach $serverip (@{$data->{ExecuteSQLOutputData}}) {
+			push (@returninfo,$serverip->{Value});
+		}
+	} else {
+		push (@returninfo,$data->{ExecuteSQLOutputData}->{Value});
+	}
+	return @returninfo;
 }

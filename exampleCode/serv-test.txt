@@ -1,24 +1,24 @@
-Cisco CallManager	CUCM10
-Cisco Unified Mobile Voice Access Service	CUCM10
-Cisco IP Voice Media Streaming App	CUCM10
-Cisco CTIManager	CUCM10
-Cisco Extension Mobility	CUCM10
-Cisco Extended Functions	CUCM10
-Cisco DHCP Monitor Service	CUCM10
-Cisco Dialed Number Analyzer Server	CUCM10
-Cisco Dialed Number Analyzer	CUCM10
-Cisco Tftp	CUCM10
-Cisco WebDialer Web Service	CUCM10
-Cisco SOAP - CDRonDemand Service	CUCM10
-Cisco CAR Web Service	CUCM10
-Cisco UXL Web Service	CUCM10
-Cisco Bulk Provisioning Service	CUCM10
-Cisco Serviceability Reporter	CUCM10
-Cisco CallManager SNMP Service	CUCM10
-Cisco CTL Provider	CUCM10
-Cisco Certificate Authority Proxy Function	CUCM10
-Cisco DirSync	CUCM10
-Cisco Intercluster Lookup Service	CUCM10
-Cisco Location Bandwidth Manager	CUCM10
-Cisco Directory Number Alias Sync	CUCM10
-Cisco Directory Number Alias Lookup	CUCM10
+Cisco CallManager	cucm3
+Cisco Unified Mobile Voice Access Service	cucm3
+Cisco IP Voice Media Streaming App	cucm3
+Cisco CTIManager	cucm3
+Cisco Extension Mobility	cucm3
+Cisco Extended Functions	cucm3
+Cisco DHCP Monitor Service	cucm3
+Cisco Dialed Number Analyzer Server	cucm3
+Cisco Dialed Number Analyzer	cucm3
+Cisco Tftp	cucm3
+Cisco WebDialer Web Service	cucm3
+Cisco SOAP - CDRonDemand Service	cucm3
+Cisco CAR Web Service	cucm3
+Cisco UXL Web Service	cucm3
+Cisco Bulk Provisioning Service	cucm3
+Cisco Serviceability Reporter	cucm3
+Cisco CallManager SNMP Service	cucm3
+Cisco CTL Provider	cucm3
+Cisco Certificate Authority Proxy Function	cucm3
+Cisco DirSync	cucm3
+Cisco Intercluster Lookup Service	cucm3
+Cisco Location Bandwidth Manager	cucm3
+Cisco Directory Number Alias Sync	cucm3
+Cisco Directory Number Alias Lookup	cucm3

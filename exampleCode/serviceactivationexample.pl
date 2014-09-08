@@ -1,10 +1,10 @@
 use MyInterfaces::ControlCenterServices::ControlCenterServicesPort;
 use XML::LibXML;
 my $interface = MyInterfaces::ControlCenterServices::ControlCenterServicesPort->new();
-$interface->set_proxy('https://192.168.1.45:8443/controlcenterservice2/services/ControlCenterServices');
+$interface->set_proxy('https://10.89.179.90:8443/controlcenterservice2/services/ControlCenterServices');
 my $response;
 my $user = "admin";
-my $password = "C!sc0123";
+my $password = "C!sco123";
 
 BEGIN{
 sub SOAP::Transport::HTTP::Client::get_basic_credentials {
@@ -18,7 +18,7 @@ while(<IN>) {
 	($servicename,$hostname) = split("\t");
 	$response = $interface->soapDoServiceDeployment( {
 		DeploymentServiceRequest =>  { # MyTypes::DeploymentServiceRequest
-		  NodeName =>  "CUCM10", # string
+		  NodeName =>  "CUCM3", # string
 		  DeployType => "Deploy", # DeployType
 		  ServiceList =>  { # MyTypes::ArrayOfServices
 			item =>  $servicename, # string
