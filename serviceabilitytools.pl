@@ -8,6 +8,7 @@
 ######################################################################################################
 use Data::Dumper;
 use XML::Simple;
+use Text::CSV;
 
 # Support info
 my $supporturl="See https://discdungeon.cdw.com/vvtwiki/index.php/Serviceabilitytools for more info.\n";
@@ -76,18 +77,43 @@ if ($version eq '10.0') {
 
 ###########
 # Analyse command line args
-if ($ARGV[0] eq 'activateservice') {
-	### act serv functions
-} elsif ($ARGV[0] eq 'deactivateservice') {
-	### deactivate serv functions
-} elsif ($ARGV[0] eq 'startservice') {
-	### start serv functions
-} elsif ($ARGV[0] eq 'stopservice') {
-	### stop serv functions
-} elsif ($ARGV[0] eq 'restartservice') {
-	### restart serv functions
+if ($ARGV[0] eq 'deployservice') {
+	my %returninfo;
+	open my $fh, "<", $ARGV[1] or die "$ARGV[1]: $!";
+	my $csv = Text::CSV->new ({ binary => 1, auto_diag => 1, sep_char => "\t" });
+	$csv->column_names ($csv->getline ($fh));
+	while ( not $csv->eof ) {
+		my $row = $csv->getline_hr($fh);
+		%returninfo=&deployservice($servinterface,$row->{Server},$row->{Node},$row->{Deploy},$row->{Service});
+		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Deploy} Result:$returninfo{success}";
+		if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
+		print "\n";
+	}
+	close $fh;
+} elsif ($ARGV[0] eq 'controlservice') {
+	my %returninfo;
+	open my $fh, "<", $ARGV[1] or die "$ARGV[1]: $!";
+	my $csv = Text::CSV->new ({ binary => 1, auto_diag => 1, sep_char => "\t" });
+	$csv->column_names ($csv->getline ($fh));
+	while ( not $csv->eof ) {
+		my $row = $csv->getline_hr($fh);
+		%returninfo=&controlservice($servinterface,$row->{Server},$row->{Node},$row->{Action},$row->{Service});
+		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Action} Result:$returninfo{success}";
+		if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
+		print "\n";
+	}
+	close $fh;
 } elsif ($ARGV[0] eq 'statusservice') {
-	### status serv functions
+	my %returninfo;
+	open my $fh, "<", $ARGV[1] or die "$ARGV[1]: $!";
+	my $csv = Text::CSV->new ({ binary => 1, auto_diag => 1, sep_char => "\t" });
+	$csv->column_names ($csv->getline ($fh));
+	while ( not $csv->eof ) {
+		my $row = $csv->getline_hr($fh);
+		%returninfo=&statusservice($servinterface,$row->{Server},$row->{Service});
+		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\tUptime:" . &uptime($returninfo{uptime}) . "\n";
+	}
+	close $fh;
 } elsif ($ARGV[0] eq 'listservice') {
 	if($ARGV[1] eq '') {
 		die "Command line must include FQDN or IP address of host to connect to\n";
@@ -133,17 +159,37 @@ if ($ARGV[0] eq 'activateservice') {
 	}
 } elsif ($ARGV[0] eq 'impclusterrestart') {
 	### cluster restart functions
-	my @nodes=&getimpnodes($risinterface,$primaryserver);
+	my @nodes;
+	if ($version eq '9.1') {
+		@nodes=&getimpnodes($risinterface,$primaryimpserver);
+	} else {
+		@nodes=&getimpnodes($risinterface,$primaryserver);
+	}
 	print "IM&P Nodes found: ";
 	foreach $node (@nodes) {print $node . ", ";}
-	foreach $node (@nodes) {
+		foreach $node (@nodes) {
 		%response=&statusservice($servinterface,$node,$ARGV[1]);
+		if($response{success} eq 'Successful') {
+			print "Node: $node Service Status: $response{status}\n";
+			if ($response{status} eq 'Started') {
+				push (@runningnodes,$node);
+			}
+		}
+	}
+	foreach $node (@runningnodes) {
+		print "Attempting restart of $ARGV[1] on $node..\n";
+		%response=&startstopservice($servinterface,$node,$node,"Restart",$ARGV[1]);
+		if($response{success} eq 'Successful') {
+			if ($response{uptime} < 60 && $response{status} eq "Started") {
+				print "Restart on $node successful\n";
+			}
+		}
 	}
 } else {
 	die "No valid tool specified. Valid tools are:\n$validtools\n\n$supporturl";
 }
 
-sub actdeactservice {
+sub deployservice {
 	my ($interface, $server, $nodename, $deploy, $servicename) = @_;
 	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
@@ -172,7 +218,7 @@ sub actdeactservice {
 		}
 		$test=1;
 	}
-	$responseinfo=$response->get_soapDoControlServicesReturn();
+	$responseinfo=$response->get_soapDoServiceDeploymentReturn();
 	$success=$responseinfo->get_ReturnCode();
 	$successreason=$responseinfo->get_ReasonString();
 	$servhead=$responseinfo->get_ServiceInfoList();
@@ -188,7 +234,7 @@ sub actdeactservice {
 	return %returninfo;
 }
 
-sub startstopservice {
+sub controlservice {
 	my ($interface, $server, $nodename, $control, $servicename) = @_;
 	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
@@ -220,12 +266,14 @@ sub startstopservice {
 	$responseinfo=$response->get_soapDoControlServicesReturn();
 	$success=$responseinfo->get_ReturnCode();
 	$servhead=$responseinfo->get_ServiceInfoList();
+	$successreason=$responseinfo->get_ReasonString();
 	$servbody=$servhead->get_item();
 	$servname=$servbody->get_ServiceName();
 	$servuptime=$servbody->get_UpTime();
 	$servstatus=$servbody->get_ServiceStatus();
 	$returninfo{name}=$servname;
 	if ($success=='0'){$returninfo{success}='Successful'} else {$returninfo{success}='Failed';}
+	$returninfo{successreason}=$successreason;
 	$returninfo{uptime}=$servuptime;
 	$returninfo{status}=$servstatus;
 	return %returninfo;
@@ -378,10 +426,10 @@ sub statusservice {
 		}
 		$test=1;
 	}
-	$responseinfo=$response->get_soapGetServiceStatusReturn();
-	$success=$responseinfo->get_ReturnCode();
-	$successreason=$responseinfo->get_ReasonString();
-	$servhead=$responseinfo->get_ServiceInfoList();
+	$returninfo=$response->get_soapGetServiceStatusReturn();
+	$success=$returninfo->get_ReturnCode();
+	$successreason=$returninfo->get_ReasonString();
+	$servhead=$returninfo->get_ServiceInfoList();
 	$servbody=$servhead->get_item();
 	$servname=$servbody->get_ServiceName();
 	$servuptime=$servbody->get_UpTime();
@@ -396,7 +444,7 @@ sub statusservice {
 
 sub uptime {
 	my ($uptime) = @_;
-	$converteduptime = "%dd %dh %dm %ds",(gmtime $uptime)[7,2,1,0];
+	$converteduptime = sprintf("%dd %dh %dm %ds",(gmtime $uptime)[7,2,1,0]);
 	return $converteduptime;
 }
 

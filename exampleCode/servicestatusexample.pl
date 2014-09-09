@@ -1,6 +1,5 @@
-use MyInterfaces::ControlCenterServices::ControlCenterServicesPort;
-use XML::LibXML;
-my $interface = MyInterfaces::ControlCenterServices::ControlCenterServicesPort->new();
+use CiscoUC::Serviceability::10_0::Interfaces::ControlCenterServices::ControlCenterServicesPort;
+my $interface = CiscoUC::Serviceability::10_0::Interfaces::ControlCenterServices::ControlCenterServicesPort->new();
 $interface->set_proxy('https://192.168.1.45:8443/controlcenterservice2/services/ControlCenterServices');
 my $response;
 my $user = "admin";
