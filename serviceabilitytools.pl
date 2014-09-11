@@ -9,6 +9,9 @@
 use Data::Dumper;
 use XML::Simple;
 use Text::CSV;
+use File::Slurp;
+use MIME::Base64;
+use Crypt::CBCeasy;
 
 # Support info
 my $supporturl="See https://discdungeon.cdw.com/vvtwiki/index.php/Serviceabilitytools for more info.\n";
@@ -16,6 +19,7 @@ my $validtools="activateservice\ndeactivateservice\nstartservice\nstopservice\nr
 my $supportedversions = "(9.1,10.0,10.5)";
 my $servinterface;
 my $risinterface;
+
 
 # Open and read config file
 open (CONFIG,"serviceabilitytools.cfg") or die "No config file found.\n\n$supporturl";
@@ -29,16 +33,24 @@ while (<CONFIG>) {
 	$$var = $value;
 }
 if ($user eq "" || $password eq "" || $version eq "" || $primaryserver eq "") { die "Required fields not in config file\n\n$supporturl";}
-
-#------- Add in function to encrypt password
-#####
-####
-###
-##
-#
-
 close (CONFIG);
 
+my $config = read_file("serviceabilitytools.cfg");
+$config=~m/assword=(.*)\n/;
+$rawpassword=$1;
+if ($rawpassword=~/ENCR:(.*)/) {
+	#password already encrypted
+	$password=decryptpwd($1);
+} else {
+	#encrypt password and rewrite config file
+	$password=$rawpassword;
+	$encryptedpwd=encryptpwd($rawpassword);
+	chomp $encryptedpwd;
+	$config=~s/assword=$rawpassword/assword=ENCR:$encryptedpwd/;
+	open (CONFIG,">serviceabilitytools.cfg") or die "Can't write to config file\n";
+	print CONFIG $config;
+	close (CONFIG);
+}
 
 ## Set up logging
 if ($debug eq "") {$debug='0';}
@@ -84,10 +96,14 @@ if ($ARGV[0] eq 'deployservice') {
 	$csv->column_names ($csv->getline ($fh));
 	while ( not $csv->eof ) {
 		my $row = $csv->getline_hr($fh);
-		%returninfo=&deployservice($servinterface,$row->{Server},$row->{Node},$row->{Deploy},$row->{Service});
-		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Deploy} Result:$returninfo{success}";
-		if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
-		print "\n";
+		if ($row->{Service} ne '') {
+					%returninfo=&deployservice($servinterface,$row->{Server},$row->{Node},$row->{Deploy},$row->{Service});
+					$field1="Node:$row->{Node}";
+					$field2="Service:$row->{Service}";
+					$field3="Service Status:$returninfo{status}";
+					$field4="$row->{Deploy} Result:$returninfo{success}";
+					printf "%-12s %-50s %-25s %-s\n", $field1, $field2, $field3, $field4;
+		}
 	}
 	close $fh;
 } elsif ($ARGV[0] eq 'controlservice') {
@@ -97,10 +113,12 @@ if ($ARGV[0] eq 'deployservice') {
 	$csv->column_names ($csv->getline ($fh));
 	while ( not $csv->eof ) {
 		my $row = $csv->getline_hr($fh);
-		%returninfo=&controlservice($servinterface,$row->{Server},$row->{Node},$row->{Action},$row->{Service});
-		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Action} Result:$returninfo{success}";
-		if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
-		print "\n";
+		if ($row->{Service} ne '') {
+			%returninfo=&controlservice($servinterface,$row->{Server},$row->{Node},$row->{Action},$row->{Service});
+			print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Action} Result:$returninfo{success}";
+			if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
+			print "\n";
+		}
 	}
 	close $fh;
 } elsif ($ARGV[0] eq 'statusservice') {
@@ -110,8 +128,10 @@ if ($ARGV[0] eq 'deployservice') {
 	$csv->column_names ($csv->getline ($fh));
 	while ( not $csv->eof ) {
 		my $row = $csv->getline_hr($fh);
-		%returninfo=&statusservice($servinterface,$row->{Server},$row->{Service});
-		print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\tUptime:" . &uptime($returninfo{uptime}) . "\n";
+		if ($row->{Service} ne '') {
+			%returninfo=&statusservice($servinterface,$row->{Server},$row->{Service});
+			print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\tUptime:" . &uptime($returninfo{uptime}) . "\n";
+		}
 	}
 	close $fh;
 } elsif ($ARGV[0] eq 'listservice') {
@@ -210,7 +230,7 @@ sub deployservice {
 		if (!$response) {
 			if ($response->get_faultstring()->serialize() =~ /Exceeded allowed rate/) {
 				DEBUG("AXL throttle exceeded. Pausing 10 seconds...\n");
-				sleep 10;
+				sleep 20;
 				redo;
 			} else {
 				die $response->get_faultstring()->serialize();
@@ -507,4 +527,22 @@ sub getimpnodes {
 		push (@returninfo,$data->{ExecuteSQLOutputData}->{Value});
 	}
 	return @returninfo;
+}
+
+######################
+# Password encryption#
+# encrypt            #
+######################
+sub encryptpwd {
+  my( $s ) = @_;
+  return( encode_base64( DES::encipher( 'Iw0uldL1k3S0m3Pi3', $s ) ) );
+}
+
+######################
+# Password decryption#
+# decrypt            #
+######################
+sub decryptpwd {                                                                                                                                                  
+  my( $s ) = @_;
+  return( DES::decipher( 'Iw0uldL1k3S0m3Pi3', decode_base64( $s ) ) );
 }

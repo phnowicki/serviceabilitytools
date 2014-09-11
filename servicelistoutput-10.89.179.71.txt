@@ -1,0 +1,56 @@
+Server name	Service name	Service Type	Dependent Services	Group Name	Deployable
+10.89.179.71	Cisco AXL Web Service	Servlet		Database and Admin Services	Deployable
+10.89.179.71	Cisco Serviceability Reporter	Service		Performance and Monitoring Services	Deployable
+10.89.179.71	Cisco Bulk Provisioning Service	Service		Database and Admin Services	Deployable
+10.89.179.71	Cisco SIP Proxy	Service	Cisco IM and Presence Data Monitor,Cisco SIP Registration Datastore,Cisco Route Datastore,Cisco Login Datastore,	IM and Presence Services	Deployable
+10.89.179.71	Cisco Presence Engine	Service	Cisco IM and Presence Data Monitor,Cisco OAM Agent,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Text Conference Manager	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Web Connection Manager	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Connection Manager	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP SIP Federation Connection Manager	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP XMPP Federation Connection Manager	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Message Archiver	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Directory Service	Service	Cisco XCP Router,	IM and Presence Services	Deployable
+10.89.179.71	Cisco XCP Authentication Service	Service	Cisco XCP Router,Cisco Login Datastore,Cisco Route Datastore,	IM and Presence Services	Deployable
+10.89.179.71	Cisco CallManager Serviceability RTMT	Servlet		Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco CallManager Serviceability	Servlet		System Services	Not Deployable
+10.89.179.71	A Cisco DB	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco Sync Agent	Service		IM and Presence Services	Not Deployable
+10.89.179.71	A Cisco DB Replicator	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco Login Datastore	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco Route Datastore	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco Tomcat	Service		Platform Services	Not Deployable
+10.89.179.71	SNMP Master Agent	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco Database Layer Monitor	Service		DB Services	Not Deployable
+10.89.179.71	MIB2 Agent	Service		Platform Services	Not Deployable
+10.89.179.71	Host Resources Agent	Service		Platform Services	Not Deployable
+10.89.179.71	System Application Agent	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco CDP Agent	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco Syslog Agent	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco RTMT Reporter Servlet	Servlet		Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco Log Partition Monitoring Tool	Service	Cisco Database Layer Monitor,	Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco CDP	Service		System Services	Not Deployable
+10.89.179.71	SOAP -Real-Time Service APIs	Service		SOAP Services	Not Deployable
+10.89.179.71	SOAP -Performance Monitoring APIs	Service		SOAP Services	Not Deployable
+10.89.179.71	SOAP -Log Collection APIs	Service		SOAP Services	Not Deployable
+10.89.179.71	Cisco DRF Local	Service		Backup and Restore Services	Not Deployable
+10.89.179.71	Cisco Certificate Expiry Monitor	Service		Platform Services	Not Deployable
+10.89.179.71	Cisco Trace Collection Servlet	Servlet		System Services	Not Deployable
+10.89.179.71	Cisco Trace Collection Service	Service		System Services	Not Deployable
+10.89.179.71	Cisco Tomcat Stats Servlet	Servlet		Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco RIS Data Collector	Service		Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco AMC Service	Service		Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco Audit Event Service	Service	Cisco Database Layer Monitor,A Cisco DB,	Performance and Monitoring	Not Deployable
+10.89.179.71	Cisco Config Agent	Service	Cisco IM and Presence Data Monitor,	IM and Presence Services	Not Deployable
+10.89.179.71	Cisco OAM Agent	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco Client Profile Agent	Servlet	Cisco Route Datastore,Cisco Login Datastore,	IM and Presence Services	Not Deployable
+10.89.179.71	Cisco Intercluster Sync Agent	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco XCP Config Manager	Service	Cisco IM and Presence Data Monitor,	IM and Presence Services	Not Deployable
+10.89.179.71	Cisco XCP Router	Service	Cisco IM and Presence Data Monitor,	IM and Presence Services	Not Deployable
+10.89.179.71	Cisco IM and Presence Admin	Servlet		Admin Services	Not Deployable
+10.89.179.71	Cisco Server Recovery Manager	Service	Cisco IM and Presence Data Monitor,	IM and Presence Services	Not Deployable
+10.89.179.71	Cisco IM and Presence Data Monitor	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco Presence Datastore	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Cisco SIP Registration Datastore	Service		IM and Presence Services	Not Deployable
+10.89.179.71	Platform Administrative Web Service	Servlet		Platform Services	Not Deployable
+10.89.179.71	Cisco RCC Device Selection Service	Servlet		IM and Presence Services	Not Deployable

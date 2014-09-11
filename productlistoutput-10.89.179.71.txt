@@ -1,0 +1,63 @@
+Active Version: 10.5.1.10000-9.i386
+Primary Node: CUCM.customer1.com
+Secondary Node: 
+
+Products List...
+	Cisco Unified Communications Manager IM and Presence	10.5.1.10000-9	Cisco Unified Communications Manager IM and Presence	Cups	IM_AND_PRESENCE
+	Common Services	10.5.1.10000-9	Common Services for all Products	Common	SYS
+Services List...
+	Cisco AXL Web Service	Servlet	Deployable	Database and Admin Services	201900	
+	Cisco Serviceability Reporter	Service	Deployable	Performance and Monitoring Services	Common	
+	Cisco Bulk Provisioning Service	Service	Deployable	Database and Admin Services	Cups	
+	Cisco SIP Proxy	Service	Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,Cisco SIP Registration Datastore,Cisco Route Datastore,Cisco Login Datastore,
+	Cisco Presence Engine	Service	Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,Cisco OAM Agent,
+	Cisco XCP Text Conference Manager	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP Web Connection Manager	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP Connection Manager	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP SIP Federation Connection Manager	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP XMPP Federation Connection Manager	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP Message Archiver	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP Directory Service	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,
+	Cisco XCP Authentication Service	Service	Deployable	IM and Presence Services	Cups	Cisco XCP Router,Cisco Login Datastore,Cisco Route Datastore,
+	Cisco CallManager Serviceability RTMT	Servlet	Not Deployable	Performance and Monitoring	Common	
+	Cisco CallManager Serviceability	Servlet	Not Deployable	System Services	Common	
+	A Cisco DB	Service	Not Deployable	Platform Services	Common	
+	Cisco Sync Agent	Service	Not Deployable	IM and Presence Services	Cups	
+	A Cisco DB Replicator	Service	Not Deployable	Platform Services	Common	
+	Cisco Login Datastore	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco Route Datastore	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco Tomcat	Service	Not Deployable	Platform Services	Common	
+	SNMP Master Agent	Service	Not Deployable	Platform Services	Common	
+	Cisco Database Layer Monitor	Service	Not Deployable	DB Services	Common	
+	MIB2 Agent	Service	Not Deployable	Platform Services	Common	
+	Host Resources Agent	Service	Not Deployable	Platform Services	Common	
+	System Application Agent	Service	Not Deployable	Platform Services	Common	
+	Cisco CDP Agent	Service	Not Deployable	Platform Services	Common	
+	Cisco Syslog Agent	Service	Not Deployable	Platform Services	Common	
+	Cisco RTMT Reporter Servlet	Servlet	Not Deployable	Performance and Monitoring	Common	
+	Cisco Log Partition Monitoring Tool	Service	Not Deployable	Performance and Monitoring	Common	Cisco Database Layer Monitor,
+	Cisco CDP	Service	Not Deployable	System Services	Common	
+	SOAP -Real-Time Service APIs	Service	Not Deployable	SOAP Services	Common	
+	SOAP -Performance Monitoring APIs	Service	Not Deployable	SOAP Services	Common	
+	SOAP -Log Collection APIs	Service	Not Deployable	SOAP Services	Common	
+	Cisco DRF Local	Service	Not Deployable	Backup and Restore Services	Common	
+	Cisco Certificate Expiry Monitor	Service	Not Deployable	Platform Services	Common	
+	Cisco Trace Collection Servlet	Servlet	Not Deployable	System Services	Common	
+	Cisco Trace Collection Service	Service	Not Deployable	System Services	Common	
+	Cisco Tomcat Stats Servlet	Servlet	Not Deployable	Performance and Monitoring	Common	
+	Cisco RIS Data Collector	Service	Not Deployable	Performance and Monitoring	Common	
+	Cisco AMC Service	Service	Not Deployable	Performance and Monitoring	Common	
+	Cisco Audit Event Service	Service	Not Deployable	Performance and Monitoring	Common	Cisco Database Layer Monitor,A Cisco DB,
+	Cisco Config Agent	Service	Not Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,
+	Cisco OAM Agent	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco Client Profile Agent	Servlet	Not Deployable	IM and Presence Services	Cups	Cisco Route Datastore,Cisco Login Datastore,
+	Cisco Intercluster Sync Agent	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco XCP Config Manager	Service	Not Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,
+	Cisco XCP Router	Service	Not Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,
+	Cisco IM and Presence Admin	Servlet	Not Deployable	Admin Services	Cups	
+	Cisco Server Recovery Manager	Service	Not Deployable	IM and Presence Services	Cups	Cisco IM and Presence Data Monitor,
+	Cisco IM and Presence Data Monitor	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco Presence Datastore	Service	Not Deployable	IM and Presence Services	Cups	
+	Cisco SIP Registration Datastore	Service	Not Deployable	IM and Presence Services	Cups	
+	Platform Administrative Web Service	Servlet	Not Deployable	Platform Services	Common	
+	Cisco RCC Device Selection Service	Servlet	Not Deployable	IM and Presence Services	Cups	
