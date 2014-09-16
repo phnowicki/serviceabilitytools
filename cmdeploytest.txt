@@ -1,25 +1,25 @@
-Server	Service	Node	Deploy
-192.168.1.45	Cisco CallManager	CUCM10	Deploy
-192.168.1.45	Cisco Unified Mobile Voice Access Service	CUCM10	Deploy
-192.168.1.45	Cisco IP Voice Media Streaming App	CUCM10	Deploy
-192.168.1.45	Cisco CTIManager	CUCM10	Deploy
-192.168.1.45	Cisco Extension Mobility	CUCM10	Deploy
-192.168.1.45	Cisco Extended Functions	CUCM10	Deploy
-192.168.1.45	Cisco DHCP Monitor Service	CUCM10	Deploy
-192.168.1.45	Cisco Dialed Number Analyzer Server	CUCM10	Deploy
-192.168.1.45	Cisco Dialed Number Analyzer	CUCM10	Deploy
-192.168.1.45	Cisco Tftp	CUCM10	Deploy
-192.168.1.45	Cisco WebDialer Web Service	CUCM10	Deploy
-192.168.1.45	Cisco SOAP - CDRonDemand Service	CUCM10	Deploy
-192.168.1.45	Cisco CAR Web Service	CUCM10	Deploy
-192.168.1.45	Cisco UXL Web Service	CUCM10	Deploy
-192.168.1.45	Cisco Bulk Provisioning Service	CUCM10	Deploy
-192.168.1.45	Cisco Serviceability Reporter	CUCM10	Deploy
-192.168.1.45	Cisco CallManager SNMP Service	CUCM10	Deploy
-192.168.1.45	Cisco CTL Provider	CUCM10	Deploy
-192.168.1.45	Cisco Certificate Authority Proxy Function	CUCM10	Deploy
-192.168.1.45	Cisco DirSync	CUCM10	Deploy
-192.168.1.45	Cisco Intercluster Lookup Service	CUCM10	Deploy
-192.168.1.45	Cisco Location Bandwidth Manager	CUCM10	Deploy
-192.168.1.45	Cisco Directory Number Alias Sync	CUCM10	Deploy
-192.168.1.45	Cisco Directory Number Alias Lookup	CUCM10	Deploy
+Server	Service	Deploy
+192.168.1.47	Cisco CallManager	Deploy
+192.168.1.47	Cisco Unified Mobile Voice Access Service	Deploy
+192.168.1.47	Cisco IP Voice Media Streaming App	Deploy
+192.168.1.47	Cisco CTIManager	Deploy
+192.168.1.47	Cisco Extension Mobility	Deploy
+192.168.1.47	Cisco Extended Functions	Deploy
+192.168.1.47	Cisco DHCP Monitor Service	Deploy
+192.168.1.47	Cisco Dialed Number Analyzer Server	Deploy
+192.168.1.47	Cisco Dialed Number Analyzer	Deploy
+192.168.1.47	Cisco Tftp	Deploy
+192.168.1.47	Cisco WebDialer Web Service	Deploy
+192.168.1.47	Cisco SOAP - CDRonDemand Service	Deploy
+192.168.1.47	Cisco CAR Web Service	Deploy
+192.168.1.47	Cisco UXL Web Service	Deploy
+192.168.1.47	Cisco Bulk Provisioning Service	Deploy
+192.168.1.47	Cisco Serviceability Reporter	Deploy
+192.168.1.47	Cisco CallManager SNMP Service	Deploy
+192.168.1.47	Cisco CTL Provider	Deploy
+192.168.1.47	Cisco Certificate Authority Proxy Function	Deploy
+192.168.1.47	Cisco DirSync	Deploy
+192.168.1.47	Cisco Intercluster Lookup Service	Deploy
+192.168.1.47	Cisco Location Bandwidth Manager	Deploy
+192.168.1.47	Cisco Directory Number Alias Sync	Deploy
+192.168.1.47	Cisco Directory Number Alias Lookup	Deploy

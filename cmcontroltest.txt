@@ -1,25 +1,25 @@
-Server	Service	Node	Action
-192.168.1.45	Cisco CallManager	CUCM10	Restart
-192.168.1.45	Cisco Unified Mobile Voice Access Service	CUCM10	Restart
-192.168.1.45	Cisco IP Voice Media Streaming App	CUCM10	Restart
-192.168.1.45	Cisco CTIManager	CUCM10	Restart
-192.168.1.45	Cisco Extension Mobility	CUCM10	Restart
-192.168.1.45	Cisco Extended Functions	CUCM10	Restart
-192.168.1.45	Cisco DHCP Monitor Service	CUCM10	Restart
-192.168.1.45	Cisco Dialed Number Analyzer Server	CUCM10	Restart
-192.168.1.45	Cisco Dialed Number Analyzer	CUCM10	Restart
-192.168.1.45	Cisco Tftp	CUCM10	Restart
-192.168.1.45	Cisco WebDialer Web Service	CUCM10	Restart
-192.168.1.45	Cisco SOAP - CDRonDemand Service	CUCM10	Restart
-192.168.1.45	Cisco CAR Web Service	CUCM10	Restart
-192.168.1.45	Cisco UXL Web Service	CUCM10	Restart
-192.168.1.45	Cisco Bulk Provisioning Service	CUCM10	Restart
-192.168.1.45	Cisco Serviceability Reporter	CUCM10	Restart
-192.168.1.45	Cisco CallManager SNMP Service	CUCM10	Restart
-192.168.1.45	Cisco CTL Provider	CUCM10	Restart
-192.168.1.45	Cisco Certificate Authority Proxy Function	CUCM10	Restart
-192.168.1.45	Cisco DirSync	CUCM10	Restart
-192.168.1.45	Cisco Intercluster Lookup Service	CUCM10	Restart
-192.168.1.45	Cisco Location Bandwidth Manager	CUCM10	Restart
-192.168.1.45	Cisco Directory Number Alias Sync	CUCM10	Restart
-192.168.1.45	Cisco Directory Number Alias Lookup	CUCM10	Restart
+Server	Service	Action
+10.89.179.70	Cisco CallManager	Restart
+10.89.179.70	Cisco Unified Mobile Voice Access Service	Restart
+10.89.179.70	Cisco IP Voice Media Streaming App	Restart
+10.89.179.70	Cisco CTIManager	Restart
+10.89.179.70	Cisco Extension Mobility	Restart
+10.89.179.70	Cisco Extended Functions	Restart
+10.89.179.70	Cisco DHCP Monitor Service	Restart
+10.89.179.70	Cisco Dialed Number Analyzer Server	Restart
+10.89.179.70	Cisco Dialed Number Analyzer	Restart
+10.89.179.70	Cisco Tftp	Restart
+10.89.179.70	Cisco WebDialer Web Service	Restart
+10.89.179.70	Cisco SOAP - CDRonDemand Service	Restart
+10.89.179.70	Cisco CAR Web Service	Restart
+10.89.179.70	Cisco UXL Web Service	Restart
+10.89.179.70	Cisco Bulk Provisioning Service	Restart
+10.89.179.70	Cisco Serviceability Reporter	Restart
+10.89.179.70	Cisco CallManager SNMP Service	Restart
+10.89.179.70	Cisco CTL Provider	Restart
+10.89.179.70	Cisco Certificate Authority Proxy Function	Restart
+10.89.179.70	Cisco DirSync	Restart
+10.89.179.70	Cisco Intercluster Lookup Service	Restart
+10.89.179.70	Cisco Location Bandwidth Manager	Restart
+10.89.179.70	Cisco Directory Number Alias Sync	Restart
+10.89.179.70	Cisco Directory Number Alias Lookup	Restart

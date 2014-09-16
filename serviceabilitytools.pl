@@ -12,10 +12,11 @@ use Text::CSV;
 use File::Slurp;
 use MIME::Base64;
 use Crypt::CBCeasy;
+use Storable qw(dclone);
 
 # Support info
 my $supporturl="See https://discdungeon.cdw.com/vvtwiki/index.php/Serviceabilitytools for more info.\n";
-my $validtools="activateservice\ndeactivateservice\nstartservice\nstopservice\nrestartservice\nstatusservice\nlistservice\nlistproductinfo\nclusterrestart\n";
+my $validtools="activateservice\ncontrolservice\nclusterserviceinfo\nclusterservicerestart\nclustertftprestart";
 my $supportedversions = "(9.1,10.0,10.5)";
 my $servinterface;
 my $risinterface;
@@ -51,6 +52,7 @@ if ($rawpassword=~/ENCR:(.*)/) {
 	print CONFIG $config;
 	close (CONFIG);
 }
+
 
 ## Set up logging
 if ($debug eq "") {$debug='0';}
@@ -89,7 +91,7 @@ if ($version eq '10.0') {
 
 ###########
 # Analyse command line args
-if ($ARGV[0] eq 'deployservice') {
+if ($ARGV[0] eq 'activateservice') {
 	my %returninfo;
 	open my $fh, "<", $ARGV[1] or die "$ARGV[1]: $!";
 	my $csv = Text::CSV->new ({ binary => 1, auto_diag => 1, sep_char => "\t" });
@@ -97,12 +99,15 @@ if ($ARGV[0] eq 'deployservice') {
 	while ( not $csv->eof ) {
 		my $row = $csv->getline_hr($fh);
 		if ($row->{Service} ne '') {
-					%returninfo=&deployservice($servinterface,$row->{Server},$row->{Node},$row->{Deploy},$row->{Service});
-					$field1="Node:$row->{Node}";
+					%returninfo=&deployservice($servinterface,$row->{Server},$row->{Deploy},$row->{Service});
+					$field1="Node:$row->{Server}";
 					$field2="Service:$row->{Service}";
 					$field3="Service Status:$returninfo{status}";
 					$field4="$row->{Deploy} Result:$returninfo{success}";
-					printf "%-12s %-50s %-25s %-s\n", $field1, $field2, $field3, $field4;
+					$final=sprintf "%-12s %-50s %-25s %-s\n", $field1, $field2, $field3, $field4;
+					print $final;
+					chomp $final;
+					DEBUG($final . "\t" . $returninfo{successreason})
 		}
 	}
 	close $fh;
@@ -114,10 +119,18 @@ if ($ARGV[0] eq 'deployservice') {
 	while ( not $csv->eof ) {
 		my $row = $csv->getline_hr($fh);
 		if ($row->{Service} ne '') {
-			%returninfo=&controlservice($servinterface,$row->{Server},$row->{Node},$row->{Action},$row->{Service});
-			print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Action} Result:$returninfo{success}";
-			if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
-			print "\n";
+			%returninfo=&controlservice($servinterface,$row->{Server},$row->{Action},$row->{Service});
+			$field1="Node:$row->{Server}";
+			$field2="Service:$row->{Service}";
+			$field3="Service Status:$returninfo{status}";
+			$field4="$row->{Action} Result:$returninfo{success}";
+			$final=sprintf "%-12s %-50s %-25s %-s\n", $field1, $field2, $field3, $field4;
+			print $final;
+			chomp $final;
+			DEBUG($final . "\t" . $returninfo{successreason})
+			#print "Node:$row->{Server}\tService:$row->{Service}\tService Status:$returninfo{status}\t$row->{Action} Result:$returninfo{success}";
+			#if ($returninfo{success} eq "Failed") {print "\tReason:$returninfo{successreason}";}
+			#print "\n";
 		}
 	}
 	close $fh;
@@ -130,7 +143,7 @@ if ($ARGV[0] eq 'deployservice') {
 		my $row = $csv->getline_hr($fh);
 		if ($row->{Service} ne '') {
 			%returninfo=&statusservice($servinterface,$row->{Server},$row->{Service});
-			print "Node:$row->{Node}\tService:$row->{Service}\tService Status:$returninfo{status}\tUptime:" . &uptime($returninfo{uptime}) . "\n";
+			print "Node:$row->{Server}\tService:$row->{Service}\tService Status:$returninfo{status}\tUptime:" . &uptime($returninfo{uptime}) . "\n";
 		}
 	}
 	close $fh;
@@ -152,15 +165,82 @@ if ($ARGV[0] eq 'deployservice') {
 		&productinfo($servinterface,$ARGV[1]);
 		print "Product information complete...\nOutput can be found in productlistoutput-$ARGV[1].txt";
 	}
-} elsif ($ARGV[0] eq 'cmclusterrestart') {
+} elsif ($ARGV[0] eq 'clusterserviceinfo') {
+	my %clusterserviceinfo;
+	print "Begin cluster info information gathering...\nThis may take a while. Please be patient.\n";
+	sleep 1;
+	my @nodes=&getnodes($risinterface,$primaryserver);
+	print "Nodes found: ";
+	foreach $node (@nodes) {print $node . "\t";}
+	print "\n";
+	foreach $node (@nodes) {
+		my %serviceinfo = &servicelist($servinterface,$node);
+		$clusterserviceinfo{$node}= dclone(\%serviceinfo);
+	}
+	print "Collected service list from each node. Querying for current status.\n";
+	sleep 1;
+	foreach $node (@nodes) {
+		print "Begin querying node $node...\n";
+		$numservices = scalar(keys $clusterserviceinfo{$node});
+		$nummins = $numservices / 15;
+		print "$numservices services found. Estimating $nummins minutes until completion.\n"; 
+		foreach $service (keys $clusterserviceinfo{$node}) {
+			my %returninfo=&statusservice($servinterface,$node,$service);
+			$clusterserviceinfo{$node}{$service}{status}=$returninfo{status};
+			$clusterserviceinfo{$node}{$service}{uptime}=&uptime($returninfo{uptime});
+		}
+		print "Completed querying node $node...\n";
+	}
+	my ($s,$mi,$h,$d,$mo,$y) = (localtime)[0,1,2,3,4,5];
+	my $timeinfo = sprintf '%d%d%d%d%d%d', $h, $mi, $s, $mo+1, $d, $y+1900; 
+	open (OUTPUT,">clusterinfo$timeinfo.txt");
+	print OUTPUT "Server\tService\tStatus\tUptime\tType\tDependencies\tGroup\tDeployable\n";
+	foreach $node (keys %clusterserviceinfo) {
+		foreach $service (keys $clusterserviceinfo{$node}) {
+			print OUTPUT "$node\t$service\t$clusterserviceinfo{$node}{$service}{status}\t$clusterserviceinfo{$node}{$service}{uptime}\t$clusterserviceinfo{$node}{$service}{type}\t$clusterserviceinfo{$node}{$service}{dependencies}\t$clusterserviceinfo{$node}{$service}{group}\t$clusterserviceinfo{$node}{$service}{deployable}\n";
+		}
+	}
+	close (OUTPUT);
+	print "Product information complete...\nOutput can be found in clusterinfo$timeinfo.txt";
+} elsif ($ARGV[0] eq 'clusterservicerestart') {
 	### cluster restart functions
+	my @nodes=&getnodes($risinterface,$primaryserver);
+	my @runningnodes;
+	print "Nodes found: ";
+	foreach $node (@nodes) {print $node . "\t";}
+	print "\n";
+	foreach $node (@nodes) {
+		%response=&statusservice($servinterface,$node,$ARGV[1]);
+		if($response{success} eq 'Successful') {
+			print "Node: $node Service Status: $response{status} $response{servreason}\n";
+			if ($response{status} eq 'Started') {
+				push (@runningnodes,$node);
+			}
+		}
+	}
+	foreach $node (@runningnodes) {
+		print "Attempting restart of $ARGV[1] on $node..\n";
+		%response=&controlservice($servinterface,$node,"Restart",$ARGV[1]);
+		if($response{success}=~/^Success/) {
+			if ($response{uptime} < 60 && $response{status} eq "Started") {
+				print "Restart on $node successful\n";
+			} else {
+				print "Restart request successful on $node. Service in the process of restarting.\n";
+			}
+		} else {
+			DEBUG($response);
+		}
+	}
+} elsif ($ARGV[0] eq 'clustertftprestart') {
+	### cluster restart functions
+	my $service="Cisco Tftp";
 	my @nodes=&getcmnodes($risinterface,$primaryserver);
 	my @runningnodes;
 	print "CM Nodes found: ";
 	foreach $node (@nodes) {print $node . "\t";}
 	print "\n";
 	foreach $node (@nodes) {
-		%response=&statusservice($servinterface,$node,$ARGV[1]);
+		%response=&statusservice($servinterface,$node,$service);
 		if($response{success} eq 'Successful') {
 			print "Node: $node Service Status: $response{status}\n";
 			if ($response{status} eq 'Started') {
@@ -169,40 +249,16 @@ if ($ARGV[0] eq 'deployservice') {
 		}
 	}
 	foreach $node (@runningnodes) {
-		print "Attempting restart of $ARGV[1] on $node..\n";
-		%response=&startstopservice($servinterface,$node,$node,"Restart",$ARGV[1]);
-		if($response{success} eq 'Successful') {
+		print "Attempting restart of $service on $node..\n";
+		%response=&controlservice($servinterface,$node,"Restart",$service);
+		if($response{success}=~/^Success/) {
 			if ($response{uptime} < 60 && $response{status} eq "Started") {
 				print "Restart on $node successful\n";
+			} else {
+				print "Restart request successful on $node. Service in the process of restarting.\n";
 			}
-		}
-	}
-} elsif ($ARGV[0] eq 'impclusterrestart') {
-	### cluster restart functions
-	my @nodes;
-	if ($version eq '9.1') {
-		@nodes=&getimpnodes($risinterface,$primaryimpserver);
-	} else {
-		@nodes=&getimpnodes($risinterface,$primaryserver);
-	}
-	print "IM&P Nodes found: ";
-	foreach $node (@nodes) {print $node . ", ";}
-		foreach $node (@nodes) {
-		%response=&statusservice($servinterface,$node,$ARGV[1]);
-		if($response{success} eq 'Successful') {
-			print "Node: $node Service Status: $response{status}\n";
-			if ($response{status} eq 'Started') {
-				push (@runningnodes,$node);
-			}
-		}
-	}
-	foreach $node (@runningnodes) {
-		print "Attempting restart of $ARGV[1] on $node..\n";
-		%response=&startstopservice($servinterface,$node,$node,"Restart",$ARGV[1]);
-		if($response{success} eq 'Successful') {
-			if ($response{uptime} < 60 && $response{status} eq "Started") {
-				print "Restart on $node successful\n";
-			}
+		} else {
+			die Dumper %response;
 		}
 	}
 } else {
@@ -210,7 +266,7 @@ if ($ARGV[0] eq 'deployservice') {
 }
 
 sub deployservice {
-	my ($interface, $server, $nodename, $deploy, $servicename) = @_;
+	my ($interface, $server, $deploy, $servicename) = @_;
 	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
@@ -218,7 +274,7 @@ sub deployservice {
 	while($test==0){
 		$response = $interface->soapDoServiceDeployment( {
 				DeploymentServiceRequest =>  { # MyTypes::DeploymentServiceRequest
-				  NodeName =>  $nodename, # string
+				  NodeName =>  $server, # string
 				  DeployType => $deploy, # DeployType
 				  ServiceList =>  { # MyTypes::ArrayOfServices
 					item =>  $servicename, # string
@@ -239,15 +295,17 @@ sub deployservice {
 		$test=1;
 	}
 	$responseinfo=$response->get_soapDoServiceDeploymentReturn();
-	$success=$responseinfo->get_ReturnCode();
+	$success=$responseinfo->get_ReasonCode();
 	$successreason=$responseinfo->get_ReasonString();
 	$servhead=$responseinfo->get_ServiceInfoList();
-	$servbody=$servhead->get_item();
-	$servname=$servbody->get_ServiceName();
-	$servuptime=$servbody->get_UpTime();
-	$servstatus=$servbody->get_ServiceStatus();
-	$returninfo{name}=$servname;
-	if ($success=='0'){$returninfo{success}='Successful'} else {$returninfo{success}='Failed';}
+	eval {
+		$servbody=$servhead->get_item();
+		$servname=$servbody->get_ServiceName();
+		$servuptime=$servbody->get_UpTime();
+		$servstatus=$servbody->get_ServiceStatus();
+	};
+	$returninfo{name}=$servicename;
+	if ($success=='-1'){$returninfo{success}='Successful'} else {$returninfo{success}='Failed'; DEBUG($response);}
 	$returninfo{successreason}=$successreason;
 	$returninfo{uptime}=$servuptime;
 	$returninfo{status}=$servstatus;
@@ -255,7 +313,7 @@ sub deployservice {
 }
 
 sub controlservice {
-	my ($interface, $server, $nodename, $control, $servicename) = @_;
+	my ($interface, $server, $control, $servicename) = @_;
 	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
@@ -263,7 +321,7 @@ sub controlservice {
 	while($test==0){
 		$response = $interface->soapDoControlServices( {
 			ControlServiceRequest =>  { # MyTypes::ControlServiceRequest
-			  NodeName =>  $nodename, # string
+			  NodeName =>  $server, # string
 			  ControlType => $control, # ControlType
 			  ServiceList =>  { # MyTypes::ArrayOfServices
 				item =>  $servicename, # string
@@ -278,21 +336,25 @@ sub controlservice {
 				sleep 10;
 				redo;
 			} else {
+				DEBUG($response);
 				die $response->get_faultstring()->serialize();
 			}
 		}
 		$test=1;
 	}
 	$responseinfo=$response->get_soapDoControlServicesReturn();
-	$success=$responseinfo->get_ReturnCode();
+	$success=$responseinfo->get_ReasonCode();
 	$servhead=$responseinfo->get_ServiceInfoList();
 	$successreason=$responseinfo->get_ReasonString();
 	$servbody=$servhead->get_item();
 	$servname=$servbody->get_ServiceName();
 	$servuptime=$servbody->get_UpTime();
 	$servstatus=$servbody->get_ServiceStatus();
+	$servsuccess=$servbody->get_ReasonCode();
 	$returninfo{name}=$servname;
-	if ($success=='0'){$returninfo{success}='Successful'} else {$returninfo{success}='Failed';}
+	$temp1=&reasondictionary($servsuccess);
+	$temp2=&reasondictionary($success);
+	$returninfo{success}="$temp1 -> $temp2"; 
 	$returninfo{successreason}=$successreason;
 	$returninfo{uptime}=$servuptime;
 	$returninfo{status}=$servstatus;
@@ -375,6 +437,7 @@ sub productinfo {
 
 sub servicelist {
 	my ($interface, $server) = @_;
+	my %services;
 	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
@@ -419,9 +482,13 @@ sub servicelist {
 		print OUT "$servdep\t";
 		print OUT "$servgroup\t";
 		print OUT "$servdeploy\n";
+		$services{$servname}{type}=$servtype;
+		$services{$servname}{dependencies}=$servdep;
+		$services{$servname}{group}=$servgroup;
+		$services{$servname}{deployable}=$servdeploy;
 	}
 	close(OUT);
-	return;
+	return %services;
 }
 
 sub statusservice {
@@ -454,16 +521,19 @@ sub statusservice {
 	$servname=$servbody->get_ServiceName();
 	$servuptime=$servbody->get_UpTime();
 	$servstatus=$servbody->get_ServiceStatus();
+	$servreason=$servbody->get_ReasonCodeString();
 	$returninfo{name}=$servname;
-	if ($success=='0'){$returninfo{success}='Successful'} else {$returninfo{success}='Failed';}
+	if ($success=='0'){$returninfo{success}="Successful";} else {$returninfo{success}="Failed";}
 	$returninfo{successreason}=$successreason;
 	$returninfo{uptime}=$servuptime;
 	$returninfo{status}=$servstatus;
+	$returninfo{servreason}=$servreason;
 	return %returninfo;
 }
 
 sub uptime {
 	my ($uptime) = @_;
+	if ($uptime eq "-1") {return "Not Started";}
 	$converteduptime = sprintf("%dd %dh %dm %ds",(gmtime $uptime)[7,2,1,0]);
 	return $converteduptime;
 }
@@ -529,9 +599,39 @@ sub getimpnodes {
 	return @returninfo;
 }
 
+sub getnodes {
+	my ($interface,$server) = @_;
+	my $sql;
+	my @returninfo;
+	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	if($version eq '9.1') {
+		die 'This method not supported with version 9.1';
+	} else {
+		$sql = "select name from processnode where nodeid>'1'";
+	}
+	$response = $interface->executeCCMSQLStatement( {
+		ExecuteSQLInputData =>  $sql, # string
+		GetColumns =>  { 
+		ColumnName =>  'name', # string
+		},
+		},,
+	);
+	$response =~ s/ .*"//g;
+
+	$xml = new XML::Simple;
+	$data = $xml->XMLin($response);
+	if (ref $data->{ExecuteSQLOutputData} eq 'ARRAY') {
+		foreach $serverip (@{$data->{ExecuteSQLOutputData}}) {
+			push (@returninfo,$serverip->{Value});
+		}
+	} else {
+		push (@returninfo,$data->{ExecuteSQLOutputData}->{Value});
+	}
+	return @returninfo;
+}
+
 ######################
 # Password encryption#
-# encrypt            #
 ######################
 sub encryptpwd {
   my( $s ) = @_;
@@ -540,9 +640,90 @@ sub encryptpwd {
 
 ######################
 # Password decryption#
-# decrypt            #
 ######################
 sub decryptpwd {                                                                                                                                                  
   my( $s ) = @_;
   return( DES::decipher( 'Iw0uldL1k3S0m3Pi3', decode_base64( $s ) ) );
+}
+
+sub reasondictionary {
+	my( $code ) = @_;
+	$reasoncode{-1}="Successful";
+	$reasoncode{-1000}="Component already initialized";
+	$reasoncode{-1001}="Entry replaced";
+	$reasoncode{-1002}="Component not initialized";
+	$reasoncode{-1003}="Component is running";
+	$reasoncode{-1004}="Entry not found";
+	$reasoncode{-1005}="Unable to process event";
+	$reasoncode{-1006}="Registration already present";
+	$reasoncode{-1007}="Unsuccessful completion";
+	$reasoncode{-1008}="Registration not found";
+	$reasoncode{-1009}="Missing or invalid environment variable";
+	$reasoncode{-1010}="No such service";
+	$reasoncode{-1011}="Component is reserved for platform";
+	$reasoncode{-1012}="Bad arguments";
+	$reasoncode{-1013}="Internal error";
+	$reasoncode{-1014}="Entry was already present";
+	$reasoncode{-1015}="Error opening IPC";
+	$reasoncode{-1016}="No license available";
+	$reasoncode{-1017}="Error opening file";
+	$reasoncode{-1018}="Error reading file";
+	$reasoncode{-1019}="Component is not running";
+	$reasoncode{-1020}="Signal ignored";
+	$reasoncode{-1021}="Notification ignored";
+	$reasoncode{-1022}="Buffer overflow";
+	$reasoncode{-1023}="Cannot parse record or entry";
+	$reasoncode{-1024}="Out of memory";
+	$reasoncode{-1025}="Not connected";
+	$reasoncode{-1026}="Component already exists";
+	$reasoncode{-1027}="Message was truncated";
+	$reasoncode{-1028}="Component is empty";
+	$reasoncode{-1029}="Operation is pending";
+	$reasoncode{-1030}="Transaction does not exist";
+	$reasoncode{-1031}="Operation timed-out";
+	$reasoncode{-1032}="File is locked";
+	$reasoncode{-1033}="Feature is not implemented yet";
+	$reasoncode{-1034}="Alarm was already set";
+	$reasoncode{-1035}="Alarm was already clear";
+	$reasoncode{-1036}="Dependency is in active state";
+	$reasoncode{-1037}="Dependency is not in active state";
+	$reasoncode{-1038}="Circular dependencies detected";
+	$reasoncode{-1039}="Component already started";
+	$reasoncode{-1040}="Component already stopped";
+	$reasoncode{-1041}="Dependencies still pending";
+	$reasoncode{-1042}="Requested process state transition not allowed";
+	$reasoncode{-1043}="No changes";
+	$reasoncode{-1044}="Boundary violation for data structure";
+	$reasoncode{-1045}="Operation not supported";
+	$reasoncode{-1046}="Process recovery in progress";
+	$reasoncode{-1047}="Operation pending on scheduled restart";
+	$reasoncode{-1048}="Operation pending on active dependencies";
+	$reasoncode{-1049}="Operation pending on active dependents";
+	$reasoncode{-1050}="Shutdown is in progress";
+	$reasoncode{-1051}="Invalid Table Handle";
+	$reasoncode{-1052}="Data Base not initialized";
+	$reasoncode{-1053}="Data Directory";
+	$reasoncode{-1054}="Table Full";
+	$reasoncode{-1055}="Deleted Data";
+	$reasoncode{-1056}="No Such Record";
+	$reasoncode{-1057}="Component already in specified state";
+	$reasoncode{-1058}="Out of range";
+	$reasoncode{-1059}="Cannot create object";
+	$reasoncode{-1060}="MSO refused, standby system not ready.";
+	$reasoncode{-1061}="MSO refused, standby state update still in progress. Try again later.";
+	$reasoncode{-1062}="MSO refused, standby state update failed. Verify configuration on standby.";
+	$reasoncode{-1063}="MSO refused, Warm start-up in progress.";
+	$reasoncode{-1064}="MSO refused, Warm start-up Failed.";
+	$reasoncode{-1065}="MSO refused, System is not in active state";
+	$reasoncode{-1066}="MSO refused, Detected standalone Flag";
+	$reasoncode{-1067}="Invalid Token presented in reques";
+	$reasoncode{-1068}="Service Not Activated";
+	$reasoncode{-1069}="Commanded Out of Service";
+	$reasoncode{-1070}="Multiple Modules have error";
+	$reasoncode{-1071}="Encountered exception";
+	$reasoncode{-1072}="Invalid context path was specified";
+	$reasoncode{-1073}="No context exists";
+	$reasoncode{-1074}="No context path was specified";
+	$reasoncode{-1075}="Application already exists";
+	return $reasoncode{$code};
 }
