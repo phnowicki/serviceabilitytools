@@ -170,6 +170,7 @@ if ($ARGV[0] eq 'activateservice') {
 	print "Begin cluster info information gathering...\nThis may take a while. Please be patient.\n";
 	sleep 1;
 	my @nodes=&getnodes($risinterface,$primaryserver);
+	if ($nodes[0] eq "") {die "Unable to query primary server $primaryserver for node list\n";}
 	print "Nodes found: ";
 	foreach $node (@nodes) {print $node . "\t";}
 	print "\n";
@@ -205,6 +206,7 @@ if ($ARGV[0] eq 'activateservice') {
 } elsif ($ARGV[0] eq 'clusterservicerestart') {
 	### cluster restart functions
 	my @nodes=&getnodes($risinterface,$primaryserver);
+	if ($nodes[0] eq "") {die "Unable to query primary server $primaryserver for node list\n";}
 	my @runningnodes;
 	print "Nodes found: ";
 	foreach $node (@nodes) {print $node . "\t";}
@@ -235,6 +237,7 @@ if ($ARGV[0] eq 'activateservice') {
 	### cluster restart functions
 	my $service="Cisco Tftp";
 	my @nodes=&getcmnodes($risinterface,$primaryserver);
+	if ($nodes[0] eq "") {die "Unable to query primary server $primaryserver for node list\n";}
 	my @runningnodes;
 	print "CM Nodes found: ";
 	foreach $node (@nodes) {print $node . "\t";}

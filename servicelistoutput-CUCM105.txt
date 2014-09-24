@@ -1,0 +1,79 @@
+Server name	Service name	Service Type	Dependent Services	Group Name	Deployable
+CUCM105	Cisco Serviceability Reporter	Service		Performance and Monitoring Services	Deployable
+CUCM105	Cisco DirSync	Service		Directory Services	Deployable
+CUCM105	Cisco CallManager	Service		CM Services	Deployable
+CUCM105	Cisco Unified Mobile Voice Access Service	Servlet		CM Services	Deployable
+CUCM105	Cisco IP Voice Media Streaming App	Service		CM Services	Deployable
+CUCM105	Cisco CTIManager	Service	Cisco CallManager,	CM Services	Deployable
+CUCM105	Cisco Extension Mobility	Servlet		CM Services	Deployable
+CUCM105	Cisco IP Manager Assistant	Servlet		CTI Services	Deployable
+CUCM105	Cisco Extended Functions	Service		Voice Quality Reporter Services	Deployable
+CUCM105	Cisco Bulk Provisioning Service	Service		Database and Admin Services	Deployable
+CUCM105	Cisco WebDialer Web Service	Servlet		CTI Services	Deployable
+CUCM105	Cisco CallManager SNMP Service	Service		Performance and Monitoring Services	Deployable
+CUCM105	Cisco DHCP Monitor Service	Service	Cisco Database Layer Monitor,	CM Services	Deployable
+CUCM105	Cisco Intercluster Lookup Service	Service		CM Services	Deployable
+CUCM105	Cisco Location Bandwidth Manager	Service		CM Services	Deployable
+CUCM105	Cisco Directory Number Alias Sync	Service		CM Services	Deployable
+CUCM105	Cisco Directory Number Alias Lookup	Servlet		CM Services	Deployable
+CUCM105	Self Provisioning IVR	Service	Cisco CTIManager,	CTI Services	Deployable
+CUCM105	Cisco Dialed Number Analyzer Server	Service		CM Services	Deployable
+CUCM105	Cisco Dialed Number Analyzer	Servlet	Cisco Dialed Number Analyzer Server,	CM Services	Deployable
+CUCM105	Cisco SOAP - CDRonDemand Service	Service		CDR Services	Deployable
+CUCM105	Cisco CAR Web Service	Servlet	Cisco CAR DB,A Cisco DB,	CDR Services	Deployable
+CUCM105	Cisco Tftp	Service		CM Services	Deployable
+CUCM105	Cisco AXL Web Service	Servlet		Database and Admin Services	Deployable
+CUCM105	Cisco UXL Web Service	Servlet		Database and Admin Services	Deployable
+CUCM105	Cisco TAPS Service	Service		Database and Admin Services	Deployable
+CUCM105	Cisco CTL Provider	Service		Security Services	Deployable
+CUCM105	Cisco Certificate Authority Proxy Function	Service		Security Services	Deployable
+CUCM105	Cisco Prime LM Resource API	Servlet		ELM Services	Deployable
+CUCM105	Cisco Prime LM Resource Legacy API	Servlet		ELM Services	Deployable
+CUCM105	Cisco CallManager Serviceability RTMT	Servlet		Performance and Monitoring	Not Deployable
+CUCM105	Platform Administrative Web Service	Servlet		Platform Services	Not Deployable
+CUCM105	Cisco CallManager Serviceability	Servlet		System Services	Not Deployable
+CUCM105	A Cisco DB	Service		Platform Services	Not Deployable
+CUCM105	A Cisco DB Replicator	Service		Platform Services	Not Deployable
+CUCM105	SNMP Master Agent	Service		Platform Services	Not Deployable
+CUCM105	Cisco Database Layer Monitor	Service		DB Services	Not Deployable
+CUCM105	MIB2 Agent	Service		Platform Services	Not Deployable
+CUCM105	Host Resources Agent	Service		Platform Services	Not Deployable
+CUCM105	System Application Agent	Service		Platform Services	Not Deployable
+CUCM105	Cisco CDP Agent	Service		Platform Services	Not Deployable
+CUCM105	Cisco Syslog Agent	Service		Platform Services	Not Deployable
+CUCM105	Cisco CallManager Admin	Servlet		Admin Services	Not Deployable
+CUCM105	Cisco RTMT Reporter Servlet	Servlet		Performance and Monitoring	Not Deployable
+CUCM105	Cisco Log Partition Monitoring Tool	Service	Cisco Database Layer Monitor,	Performance and Monitoring	Not Deployable
+CUCM105	Cisco CDP	Service		System Services	Not Deployable
+CUCM105	SOAP -Real-Time Service APIs	Service		SOAP Services	Not Deployable
+CUCM105	SOAP -Performance Monitoring APIs	Service		SOAP Services	Not Deployable
+CUCM105	SOAP -Log Collection APIs	Service		SOAP Services	Not Deployable
+CUCM105	Cisco DRF Local	Service		Backup and Restore Services	Not Deployable
+CUCM105	Cisco Certificate Expiry Monitor	Service		Platform Services	Not Deployable
+CUCM105	Cisco Certificate Change Notification	Service	Cisco Database Layer Monitor,A Cisco DB,	Platform Services	Not Deployable
+CUCM105	Cisco ELM Client Service	Servlet		Platform Services	Not Deployable
+CUCM105	Cisco Trace Collection Servlet	Servlet		System Services	Not Deployable
+CUCM105	Cisco Trace Collection Service	Service		System Services	Not Deployable
+CUCM105	Cisco Tomcat Stats Servlet	Servlet		Performance and Monitoring	Not Deployable
+CUCM105	Cisco RIS Data Collector	Service		Performance and Monitoring	Not Deployable
+CUCM105	Cisco AMC Service	Service		Performance and Monitoring	Not Deployable
+CUCM105	Cisco Audit Event Service	Service	Cisco Database Layer Monitor,A Cisco DB,	Performance and Monitoring	Not Deployable
+CUCM105	Cisco DRF Master	Service		Backup and Restore Services	Not Deployable
+CUCM105	Cisco Tomcat	Service		Platform Services	Not Deployable
+CUCM105	Cisco CallManager Personal Directory	Servlet		CM Services	Not Deployable
+CUCM105	Cisco CDR Repository Manager	Service	Cisco Database Layer Monitor,A Cisco DB,	CDR Services	Not Deployable
+CUCM105	Cisco License Manager	Service		Platform Services	Not Deployable
+CUCM105	Cisco CDR Agent	Service	Cisco Database Layer Monitor,A Cisco DB,	CDR Services	Not Deployable
+CUCM105	Cisco Extension Mobility Application	Servlet		CM Services	Not Deployable
+CUCM105	Cisco CallManager Cisco IP Phone Services	Servlet		CM Services	Not Deployable
+CUCM105	Cisco User Data Services	Servlet		CM Services	Not Deployable
+CUCM105	Cisco Change Credential Application	Servlet		CM Services	Not Deployable
+CUCM105	Cisco Trust Verification Service	Service		Security Services	Not Deployable
+CUCM105	Cisco CAR Scheduler	Service	Cisco Database Layer Monitor,A Cisco DB,Cisco CAR DB,	CDR Services	Not Deployable
+CUCM105	SOAP - Diagnostic Portal Database Service	Service		SOAP Services	Not Deployable
+CUCM105	Cisco SOAP - CallRecord Service	Service	Cisco CAR DB,	CDR Services	Not Deployable
+CUCM105	Cisco E911	Servlet		CM Services	Not Deployable
+CUCM105	Cisco CAR DB	Service		CDR Services	Not Deployable
+CUCM105	Cisco Prime LM DB	Service		ELM Services	Not Deployable
+CUCM105	Cisco Prime LM Server	Service	Cisco Prime LM DB,	ELM Services	Not Deployable
+CUCM105	Cisco Prime LM Admin	Servlet		ELM Services	Not Deployable
