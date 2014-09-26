@@ -61,8 +61,9 @@ Log::Log4perl->easy_init(
 	{ level   => $debug,
 	  file    => ">>serviceabilitytools.log" } );
 	 
-# Override and set credentials
+# Override certificate issues and set credentials
 BEGIN{
+$ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0;
 sub SOAP::Transport::HTTP::Client::get_basic_credentials {
     return ($user => $password)
 }
@@ -270,7 +271,9 @@ if ($ARGV[0] eq 'activateservice') {
 
 sub deployservice {
 	my ($interface, $server, $deploy, $servicename) = @_;
-	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
+	my $url = "https://$user:$password@" . "$server:8443/controlcenterservice2/services/ControlCenterServices";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
 	my $response;
@@ -317,7 +320,9 @@ sub deployservice {
 
 sub controlservice {
 	my ($interface, $server, $control, $servicename) = @_;
-	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
+	my $url = "https://$user:$password@" . "$server:8443/controlcenterservice2/services/ControlCenterServices";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
 	my $response;
@@ -366,7 +371,9 @@ sub controlservice {
 
 sub productinfo {
 	my ($interface, $server) = @_;
-	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
+	my $url = "https://$user:$password@" . "$server:8443/controlcenterservice2/services/ControlCenterServices";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
 	my $response;
@@ -441,7 +448,9 @@ sub productinfo {
 sub servicelist {
 	my ($interface, $server) = @_;
 	my %services;
-	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
+	my $url = "https://$user:$password@" . "$server:8443/controlcenterservice2/services/ControlCenterServices";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
 	my $response;
@@ -496,14 +505,16 @@ sub servicelist {
 
 sub statusservice {
 	my ($interface, $server, $servicename) = @_;
-	$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
+	my $url = "https://$user:$password@" . "$server:8443/controlcenterservice2/services/ControlCenterServices";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/controlcenterservice2/services/ControlCenterServices');
 	# Test added in to allow redo function
 	my $test=0;
 	my $response;
 	while($test==0){
 		$response = $interface->soapGetServiceStatus( {
 			ServiceStatus =>  $servicename, # string
-		 },,
+		 },,	
 		);
 		if (!$response) {
 			if ($response->get_faultstring()->serialize() =~ /Exceeded allowed rate/) {
@@ -545,7 +556,9 @@ sub getcmnodes {
 	my ($interface,$server) = @_;
 	my $sql;
 	my @returninfo;
-	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	my $url="https://$user:$password" . "@" . "$server:8443/realtimeservice2/services/RISService";
+	#$interface->set_proxy("https://$user:$password@$server:8443/realtimeservice2/services/RISService");
+	$interface->set_proxy($url);
 	if($version eq '9.1') {
 		$sql = "select name from processnode where nodeid>'1'";
 	} else {
@@ -558,6 +571,7 @@ sub getcmnodes {
 		},
 		},,
 	);
+	
 	$response =~ s/ .*"//g;
 	$xml = new XML::Simple;
 	$data = $xml->XMLin($response);
@@ -575,7 +589,9 @@ sub getimpnodes {
 	my ($interface,$server) = @_;
 	my $sql;
 	my @returninfo;
-	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	my $url="https://$user:$password" . "@" . "$server:8443/realtimeservice2/services/RISService";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
 	if($version eq '9.1') {
 		die 'This method not supported with version 9.1';
 	} else {
@@ -606,7 +622,9 @@ sub getnodes {
 	my ($interface,$server) = @_;
 	my $sql;
 	my @returninfo;
-	$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
+	my $url="https://$user:$password" . "@" . "$server:8443/realtimeservice2/services/RISService";
+	$interface->set_proxy($url);
+	#$interface->set_proxy('https://' . $server . ':8443/realtimeservice2/services/RISService');
 	if($version eq '9.1') {
 		die 'This method not supported with version 9.1';
 	} else {
